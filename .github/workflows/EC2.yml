@@ -1,6 +1,6 @@
 name: Entrega continua
 
-on: 
+on:
   workflow_call:
 
 jobs:
@@ -11,10 +11,10 @@ jobs:
     - name: Download a Build Artifact
       uses: actions/download-artifact@v3.0.0
       with:
-      # Artifact name
-        name: programa 
-    - uses: actions/checkout@v3    
-
+    # Artifact name
+        name: programa
+    - uses: actions/checkout@v3
+    
     - name: Deploy to Staging server
       uses: easingthemes/ssh-deploy@main
       env:
@@ -23,22 +23,21 @@ jobs:
         REMOTE_USER: ${{ secrets.REMOTE_USER }}
         TARGET: /home/${{ secrets.REMOTE_USER }}
         EXCLUDE: "postgres-data"
-
+        
     - name: executing remote ssh commands using password
-      uses: appleboy/ssh-action@v1.0.0
+      uses: appleboy/ssh-action@master
       with:
-       host: ${{ secrets.REMOTE_HOST  }}
-       username: ${{ secrets.REMOTE_USER }}
-       key: ${{ secrets.SSH_PRIVATE_KEY }}
-       port: 22
-       script: |
-         export HOST=${{ secrets.DBHOST }}
-         export USER=${{ secrets.DBUSER }}
-         export PASSWORD=${{ secrets.DBPASSWORD }}
-         export DBNAME=${{ secrets.DBNAME }}
-         export DBPORT=${{ secrets.DBPORT }}
-         export PORT=8000
-         chmod +x main
-         nohup ./main > nohup.out 2> nohup.err < /dev/null &
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
+        script: |
+          export HOST=${{ secrets.DBHOST }}
+          export USER=${{ secrets.DBUSER }}
+          export PASSWORD=${{ secrets.DBPASSWORD }}
+          export DBNAME=${{ secrets.DBNAME }}
+          export DBPORT=${{ secrets.DBPORT }}
+          export PORT=8000
+        
     
       
