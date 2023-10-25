@@ -15,7 +15,6 @@ jobs:
         env: 
           HOST: localhost
           DBPORT: 5432
-          PORT: 80
           USER: root
           PASSWORD: root
           DBNAME: root
